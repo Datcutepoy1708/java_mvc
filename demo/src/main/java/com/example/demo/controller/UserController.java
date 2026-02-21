@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.UserService;
+
 
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -22,8 +24,10 @@ public class UserController {
     }
 
     @RequestMapping("/")
-    public String getHomePage() {
+    public String getHomePage(Model model) {
         String test=this.userService.handleHello();
+        model.addAttribute("datcute",test);
+        model.addAttribute("datcutepoy","from model");
         return "hello";
     }
 }
