@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,36 +23,37 @@
          <div class="col-md-6 col-12 mx-auto">
             <h3>Create a new user</h3>
             <hr/>
-            <form>
+            <form:form method="post" action="/admin/user/create"  modelAttribute="newUser">
                 <div class="col-mb-3">
                    <label class="form-label">Email:</label>
-                   <input type="email" class="form-control">
+                   <form:input type="email" class="form-control" path="email"/>
+                   
                 </div>
                 
                 <div class="col-mb-3">
                    <label class="form-label">Password:</label>
-                   <input type="password" class="form-control">
+                   <form:input type="password" class="form-control" path="password"/>
                 </div>
 
                 <div class="col-mb-3">
                    <label class="form-label">Phone Number:</label>
-                   <input type="text" class="form-control">
+                   <form:input type="text" class="form-control" path="phone"/>
                 </div>
 
                 <div class="col-mb-3">
                    <label class="form-label">Fullname:</label>
-                   <input type="text" class="form-control">
+                   <form:input type="text" class="form-control"  path="fullname"/>
                 </div>
 
                 <div class="col-mb-3">
                    <label class="form-label">Address:</label>
-                   <input type="text" class="form-control">
+                   <form:input type="text" class="form-control" path="address"/>
                 </div>
 
                 <div class="col-mb-3">
                    <button type="button" class="btn btn-primary">Submit</button>
                 </div>
-            </form>
+            </form:form>
          </div>
       </div>
     </div>
