@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.User;
+import com.example.demo.respository.UserRepository;
 import com.example.demo.service.UserService;
 
 
@@ -21,6 +22,8 @@ public class UserController {
 
     private UserService userService;
 
+
+    
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -42,6 +45,7 @@ public class UserController {
     @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User datcutepoy) {
         System.out.println("run here: "+datcutepoy);
+        this.userService.handleSaveUser(datcutepoy);
         return "hello";
     }
 }
