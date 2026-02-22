@@ -89,6 +89,20 @@ public class UserController {
         }
         return "redirect:/admin/user";
     }
+
+    @GetMapping(value = "/admin/user/delete/{id}")
+    public String getDeleteUserPage(Model model, @PathVariable long id) {
+        model.addAttribute("id",id);
+        User user = this.userService.findUserById(id);
+        model.addAttribute("currentUser", user);
+        return "admin/user/delete";
+    }
+
+     @PostMapping(value = "/admin/user/delete/{id}")
+    public String postDeleteUserPage(Model model, @ModelAttribute("currentUser") User user) {
+        this.userService.deleteAUser(user.getId());
+        return "redirect:/admin/user";
+    }
 }
 
 // @RestController
