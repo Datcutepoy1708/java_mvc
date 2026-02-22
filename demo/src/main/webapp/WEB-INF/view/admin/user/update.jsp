@@ -21,18 +21,18 @@
     <div class="container mt-5">
       <div class="row">
          <div class="col-md-6 col-12 mx-auto">
-            <h3>Update a new user</h3>
+            <h3>Update user with id= ${id}</h3>
             <hr/>
-            <form:form method="post" action="/admin/user/update"  modelAttribute="newUser">
+            <form:form method="post" action="/admin/user/update/${currentUser.id}"  modelAttribute="currentUser">
 
-                <div class="col-mb-3">
+                <div class="col-mb-3" style="display: none;">
                    <label class="form-label">Id:</label>
-                   <form:input type="text" class="form-control" path="id"  readonly="true" />
+                   <form:input type="text" class="form-control" path="id"  disabled="true" />
                 </div>     
 
                 <div class="col-mb-3">
                    <label class="form-label">Email:</label>
-                   <form:input type="email" class="form-control" path="email"/>
+                   <form:input type="email" class="form-control" path="email" disabled="true"/>
                    
                 </div>
                 
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-mb-3">
-                   <button type="submit" class="btn btn-primary">update</button>
+                   <button type="submit" class="btn btn-warning">Update</button>
                 </div>
             </form:form>
          </div>

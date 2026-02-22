@@ -17,6 +17,9 @@ import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -49,7 +52,7 @@ public class UserController {
         return "admin/user/table";
     }
 
-    @RequestMapping("/admin/user/{id}")
+    @RequestMapping("/admin/user/detail/{id}")
     public String getUserDetailPage(Model model,@PathVariable long id) {
        System.out.println("check path id: "+id);
        User user=this.userService.findUserById(id);
@@ -58,9 +61,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/user/update/{id}" ,method = RequestMethod.GET)
-    public String updateUserFormPage(Model model, @PathVariable long id) {
+    public String getUpdateUserFormPage(Model model, @PathVariable long id) {
         User user = this.userService.findUserById(id);
-        model.addAttribute("newUser",user);
+        model.addAttribute("currentUser",user);
         return "admin/user/update";
     }
 
@@ -72,6 +75,18 @@ public class UserController {
     @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User datcutepoy) {
         this.userService.handleSaveUser(datcutepoy);
+        return "redirect:/admin/user";
+    }
+
+    @PostMapping(value = "/admin/user/update/{id}")
+    public String postUpdateUser(Model model, @ModelAttribute("currentUser") User user) {
+        User currentUser=this.userService.findUserById(user.getId());
+        if(currentUser  != null){
+            currentUser.setAddress(user.getAddress());
+            currentUser.setFullname(user.getFullname());
+            currentUser.setPhone(user.getPhone());
+            this.userService.handleSaveUser(currentUser);
+        }
         return "redirect:/admin/user";
     }
 }
