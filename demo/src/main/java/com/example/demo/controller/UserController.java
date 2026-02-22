@@ -57,6 +57,13 @@ public class UserController {
         return "admin/user/show";
     }
 
+    @RequestMapping(value = "/admin/user/update/{id}" ,method = RequestMethod.GET)
+    public String updateUserFormPage(Model model, @PathVariable long id) {
+        User user = this.userService.findUserById(id);
+        model.addAttribute("newUser",user);
+        return "admin/user/update";
+    }
+
     @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.GET)
     public String createUserFormPage(Model model, @ModelAttribute("newUser") User datcutepoy) {
         return "admin/user/create";

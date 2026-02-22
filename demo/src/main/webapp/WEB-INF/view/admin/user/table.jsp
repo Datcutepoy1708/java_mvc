@@ -46,7 +46,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                   <td>${user.fullname}</td>
                   <td>
                     <a class="btn btn-success" href="/admin/user/${user.id}">View</a>
-                    <a class="btn btn-warning">Edit</a>
+                    <a class="btn btn-warning" href="/admin/user/update/${user.id}">Edit</a>
                     <a class="btn btn-danger">Delete</a>
                   </td>
                 </tr>
