@@ -5,7 +5,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>User Detail ${id}</title>
     <!-- Latest compiled and minified CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -25,34 +25,18 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
             class="col"
             style="display: flex; justify-content: space-between"
           >
-            <h3>Table user</h3>
-            <a href="user/create" class="btn btn-primary">Create a new user</a>
+            <h3>User Detail with id= ${id}</h3>
           </div>
           <hr />
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Email</th>
-                <th scope="col">Fullname</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:forEach var="user" items="${users1}">
-                <tr>
-                  <th scope="row">${user.id}</th>
-                  <td>${user.email}</td>
-                  <td>${user.fullname}</td>
-                  <td>
-                    <a class="btn btn-success" href="/admin/user/${user.id}">View</a>
-                    <a class="btn btn-warning">Edit</a>
-                    <a class="btn btn-danger">Delete</a>
-                  </td>
-                </tr>
-              </c:forEach>
-            </tbody>
-          </table>
+          <div class="card" style="width: 60%;">
+            <div class="card-header">User infomation</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">ID: 1</li>
+              <li class="list-group-item">Email:</li>
+              <li class="list-group-item">Fullname: </li>
+              <li class="list-group-item">Address: </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

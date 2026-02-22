@@ -16,6 +16,7 @@ import com.example.demo.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -46,6 +47,13 @@ public class UserController {
         List<User> users = this.userService.getAllUsers();
         model.addAttribute("users1",users);
         return "admin/user/table";
+    }
+
+    @RequestMapping("/admin/user/{id}")
+    public String getUserDetailPage(Model model,@PathVariable long id) {
+       System.out.println("check path id: "+id);
+       model.addAttribute("id",id);
+        return "admin/user/show";
     }
 
     @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.GET)
