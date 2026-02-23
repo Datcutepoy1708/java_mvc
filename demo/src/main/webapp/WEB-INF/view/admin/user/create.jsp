@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+uri="http://java.sun.com/jsp/jstl/core"%> <%@taglib
+uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,55 +43,73 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                     action="/admin/user/create"
                     modelAttribute="newUser"
                   >
-                    <div class="col-mb-3">
-                      <label class="form-label">Email:</label>
-                      <form:input
-                        type="email"
-                        class="form-control"
-                        path="email"
-                      />
-                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label class="form-label">Email:</label>
+                        <form:input
+                          type="email"
+                          class="form-control"
+                          path="email"
+                        />
+                      </div>
 
-                    <div class="col-mb-3">
-                      <label class="form-label">Password:</label>
-                      <form:input
-                        type="password"
-                        class="form-control"
-                        path="password"
-                      />
-                    </div>
+                      <div class="col-6">
+                        <label class="form-label">Password:</label>
+                        <form:input
+                          type="password"
+                          class="form-control"
+                          path="password"
+                        />
+                      </div>
 
-                    <div class="col-mb-3">
-                      <label class="form-label">Phone Number:</label>
-                      <form:input
-                        type="text"
-                        class="form-control"
-                        path="phone"
-                      />
-                    </div>
+                      <div class="col-6">
+                        <label class="form-label">Phone Number:</label>
+                        <form:input
+                          type="text"
+                          class="form-control"
+                          path="phone"
+                        />
+                      </div>
 
-                    <div class="col-mb-3">
-                      <label class="form-label">Fullname:</label>
-                      <form:input
-                        type="text"
-                        class="form-control"
-                        path="fullname"
-                      />
-                    </div>
+                      <div class="col-6">
+                        <label class="form-label">Fullname:</label>
+                        <form:input
+                          type="text"
+                          class="form-control"
+                          path="fullname"
+                        />
+                      </div>
 
-                    <div class="col-mb-3">
-                      <label class="form-label">Address:</label>
-                      <form:input
-                        type="text"
-                        class="form-control"
-                        path="address"
-                      />
-                    </div>
+                      <div class="col-12 mb-3">
+                        <label class="form-label">Address:</label>
+                        <form:input
+                          type="text"
+                          class="form-control"
+                          path="address"
+                        />
+                      </div>
 
-                    <div class="col-mb-3">
-                      <button type="submit" class="btn btn-primary">
-                        Submit
-                      </button>
+                      <div class="col-6">
+                        <label for="inputState" class="form-label">Role</label>
+                        <select id="inputState" class="form-select">
+                          <option value="ADMIN">ADMIN</option>
+                          <option value="USER">USER</option>
+                        </select>
+                      </div>
+
+                      <div class="col-6">
+                        <label for="avatarFile" class="form-label">Avatar:</label>
+                        <input class="form-control" type="file" id="avatarFile" accept=".png,.jpg,.jpeg">
+                      </div>
+                      <div class="col-12 mb-3 col-md-6">
+                         <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview"/>
+                      </div>
+
+                      <div class="col-12 mt-3" >
+                        <button type="submit" class="btn btn-primary">
+                          Submit
+                        </button>
+                      </div>
                     </div>
                   </form:form>
                 </div>
