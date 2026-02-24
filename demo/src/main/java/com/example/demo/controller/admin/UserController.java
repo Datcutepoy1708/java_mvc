@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.domain.Role;
 import com.example.demo.domain.User;
 import com.example.demo.respository.UserRepository;
+import com.example.demo.service.RoleService;
 import com.example.demo.service.UploadService;
 import com.example.demo.service.UserService;
 
@@ -35,13 +37,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
     private UserService userService;
+    private RoleService roleService;
     private final UploadService uploadService;
     private PasswordEncoder passwordEncoder;
 
     
-    public UserController(UserService userService,UploadService uploadService, PasswordEncoder passwordEncoder ) {
+    public UserController(UserService userService,RoleService roleService,UploadService uploadService, PasswordEncoder passwordEncoder ) {
         this.userService = userService;
         this.uploadService=uploadService;
+        this.roleService=roleService;
         this.passwordEncoder=passwordEncoder;
     }
 
@@ -74,7 +78,9 @@ public class UserController {
     @RequestMapping(value = "/admin/user/update/{id}" ,method = RequestMethod.GET)
     public String getUpdateUserFormPage(Model model, @PathVariable long id) {
         User user = this.userService.findUserById(id);
+        List<Role> roles=this.roleService.getAllRoles();
         model.addAttribute("currentUser",user);
+        model.addAttribute("roles",roles);
         return "admin/user/update";
     }
 
@@ -99,12 +105,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/user/update/{id}")
-    public String postUpdateUser(Model model, @ModelAttribute("currentUser") User user) {
+    public String postUpdateUser(Model model, @ModelAttribute("currentUser") User user,@RequestParam("imageFile") MultipartFile file) {
         User currentUser=this.userService.findUserById(user.getId());
         if(currentUser  != null){
             currentUser.setAddress(user.getAddress());
             currentUser.setFullname(user.getFullname());
             currentUser.setPhone(user.getPhone());
+            String avatar=this.uploadService.handleSaveUploadFile(file, "avatar");
+            currentUser.setAvatar(avatar);
+            currentUser.setRole(this.userService.getRoleByName(user.getRole().getName()));
             this.userService.handleSaveUser(currentUser);
         }
         return "redirect:/admin/user";

@@ -51,12 +51,20 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                       <li class="list-group-item">
                         Fullname: ${user.fullname}
                       </li>
+                      <li class="list-group-item">
+                         Image:
+                         <img src="/images/avatar/${user.avatar}" style="max-height: 250px;"/>
+                      </li>
+                      <li class="list-group-item">
+                        Role:${user.role.name}
+                      </li>
                       <li class="list-group-item">Address: ${user.address}</li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
+            <a href="/admin/user" class="btn btn-success">Back</a>
           </div>
         </main>
         <jsp:include page="../layout/footer.jsp" />

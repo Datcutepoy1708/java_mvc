@@ -18,6 +18,17 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        const avatarFile = $("#avatarFile")
+        avatarFile.change(function (e) {
+          const imgURL = URL.createObjectURL(e.target.files[0])
+          $("#avatarPreview").attr("src", imgURL)
+          $("#avatarPreview").css({ display: "block" })
+        })
+      })
+    </script>
   </head>
   <body class="sb-nav-fixed">
     <jsp:include page="../layout/header.jsp" />
@@ -42,6 +53,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                     method="post"
                     action="/admin/user/update/${currentUser.id}"
                     modelAttribute="currentUser"
+                    enctype="multipart/form-data"
                   >
                     <div class="col-mb-3" style="display: none">
                       <label class="form-label">Id:</label>
@@ -49,7 +61,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                         type="text"
                         class="form-control"
                         path="id"
-                        disabled="true"
+                        readonly="true"
                       />
                     </div>
 
@@ -80,6 +92,35 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                         path="fullname"
                       />
                     </div>
+                    <div class="col-mb-3">
+                      <label class="form-label">Role:</label>
+                      <form:select class="form-select" path="role.name">
+                        <c:forEach var="role" items="${roles}">
+                          <form:option value="${role.name}"
+                            >${role.name}</form:option
+                          >
+                        </c:forEach>
+                      </form:select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="avatarFile" class="form-label">Avatar:</label>
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="avatarFile"
+                        accept=".png,.jpg,.jpeg"
+                        name="imageFile"
+                      />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <img
+                        src="/images/avatar/${currentUser.avatar}"
+                        style="max-height: 250px"
+                        alt="avatar preview"
+                        id="avatarPreview"
+                      />
+                    </div>
 
                     <div class="col-mb-3">
                       <label class="form-label">Address:</label>
@@ -100,6 +141,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
               </div>
             </div>
           </div>
+          <a href="/admin/user" class="btn btn-success">Back</a>
         </main>
         <jsp:include page="../layout/footer.jsp" />
       </div>
