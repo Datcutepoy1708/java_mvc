@@ -31,5 +31,6 @@ public void addResourceHandlers(ResourceHandlerRegistry registry) {
 registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
 registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
 registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
+registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/");
 }
 }
