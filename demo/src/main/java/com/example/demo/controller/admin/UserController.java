@@ -1,5 +1,8 @@
 package com.example.demo.controller.admin;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.domain.User;
 import com.example.demo.respository.UserRepository;
+import com.example.demo.service.UploadService;
 import com.example.demo.service.UserService;
 
+import jakarta.servlet.ServletContext;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,11 +33,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
     private UserService userService;
-
+    private final UploadService uploadService;
 
     
-    public UserController(UserService userService) {
+    public UserController(UserService userService,UploadService uploadService ) {
         this.userService = userService;
+        this.uploadService=uploadService;
     }
 
     @RequestMapping("/")
@@ -67,14 +74,18 @@ public class UserController {
         return "admin/user/update";
     }
 
-    @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.GET)
+    @GetMapping(value = "/admin/user/create" )
     public String createUserFormPage(Model model, @ModelAttribute("newUser") User datcutepoy) {
         return "admin/user/create";
     }
 
-    @RequestMapping(value = "/admin/user/create" ,method = RequestMethod.POST)
-    public String createUserPage(Model model, @ModelAttribute("newUser") User datcutepoy) {
-        this.userService.handleSaveUser(datcutepoy);
+    @PostMapping(value = "/admin/user/create")
+    public String createUserPage(Model model, 
+        @ModelAttribute("newUser") User datcutepoy,
+        @RequestParam("imageFile") MultipartFile file
+    ) {
+       String avatar=this.uploadService.handleSaveUploadFile(file, "avatar");
+       this.userService.handleSaveUser(datcutepoy);
         return "redirect:/admin/user";
     }
 
@@ -100,9 +111,12 @@ public class UserController {
 
      @PostMapping(value = "/admin/user/delete/{id}")
     public String postDeleteUserPage(Model model, @ModelAttribute("currentUser") User user) {
+
         this.userService.deleteAUser(user.getId());
         return "redirect:/admin/user";
     }
+
+
 }
 
 // @RestController

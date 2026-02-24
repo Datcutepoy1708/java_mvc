@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,10 +26,22 @@ public class User {
 
     private String avatar;
     //User many -> to one -> role
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="role_id")
     private Role role;
 
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    public List<Orders> getOrders() {
+        return orders;
+    }
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
     @OneToMany(mappedBy = "user")
     List<Orders> orders;
     
