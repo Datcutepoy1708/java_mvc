@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,7 @@ import com.example.demo.service.UploadService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletContext;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -91,9 +94,15 @@ public class UserController {
 
     @PostMapping(value = "/admin/user/create")
     public String createUserPage(Model model, 
-        @ModelAttribute("newUser") User datcutepoy,
+        @ModelAttribute("newUser") @Valid User datcutepoy,
+        BindingResult bindingResult,
         @RequestParam("imageFile") MultipartFile file
     ) {
+       List<FieldError> errors=bindingResult.getFieldErrors();
+       for(FieldError error: errors){
+        System.out.println(error.getObjectName()+" - "+error.getDefaultMessage());
+       }
+
        String avatar=this.uploadService.handleSaveUploadFile(file, "avatar");
        String hashPassword=this.passwordEncoder.encode(datcutepoy.getPassword());
        datcutepoy.setAvatar(avatar);
