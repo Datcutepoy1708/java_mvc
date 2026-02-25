@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
 uri="http://java.sun.com/jsp/jstl/core"%> <%@taglib
 uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,18 +19,17 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
     ></script>
-    <script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
       $(document).ready(() => {
-      const avatarFile = $("#avatarFile");
-      avatarFile.change(function (e) {
-      const imgURL = URL.createObjectURL(e.target.files[0]);
-      $("#avatarPreview").attr("src", imgURL);
-      $("#avatarPreview").css({ "display": "block" });
-      });
-      });
-</script>
+        const avatarFile = $("#avatarFile")
+        avatarFile.change(function (e) {
+          const imgURL = URL.createObjectURL(e.target.files[0])
+          $("#avatarPreview").attr("src", imgURL)
+          $("#avatarPreview").css({ display: "block" })
+        })
+      })
+    </script>
   </head>
   <body class="sb-nav-fixed">
     <jsp:include page="../layout/header.jsp" />
@@ -58,21 +58,29 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                   >
                     <div class="row">
                       <div class="col-6">
+                        <c:set var="errorEmail">
+                          <form:errors path="email" cssClass="invalid-feedback" />
+                        </c:set>
                         <label class="form-label">Email:</label>
                         <form:input
                           type="email"
-                          class="form-control"
+                          class="form-control ${not empty errorEmail ? 'is-invalid': ''}"
                           path="email"
                         />
+                        ${errorEmail}
                       </div>
 
                       <div class="col-6">
+                        <c:set var="errorPassword">
+                          <form:errors path="password" cssClass="invalid-feedback" />
+                        </c:set>
                         <label class="form-label">Password:</label>
                         <form:input
                           type="password"
-                          class="form-control"
+                          class="form-control ${not empty errorPassword ? 'is-invalid': ''}"
                           path="password"
                         />
+                        ${errorPassword}
                       </div>
 
                       <div class="col-6">
@@ -85,12 +93,16 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                       </div>
 
                       <div class="col-6">
+                        <c:set var="errorFullname">
+                          <form:errors path="fullname" cssClass="invalid-feedback" />
+                        </c:set>
                         <label class="form-label">Fullname:</label>
                         <form:input
                           type="text"
-                          class="form-control"
+                          class="form-control ${not empty errorFullname ? 'is-invalid': ''}"
                           path="fullname"
                         />
+                        ${errorFullname}
                       </div>
 
                       <div class="col-12 mb-3">
@@ -104,21 +116,37 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
 
                       <div class="col-6">
                         <label for="inputState" class="form-label">Role</label>
-                        <form:select id="inputState" class="form-select" path="role.name">
+                        <form:select
+                          id="inputState"
+                          class="form-select"
+                          path="role.name"
+                        >
                           <form:option value="ADMIN">ADMIN</form:option>
                           <form:option value="USER">USER</form:option>
                         </form:select>
                       </div>
 
                       <div class="col-6">
-                        <label for="avatarFile" class="form-label">Avatar:</label>
-                        <input class="form-control" type="file" id="avatarFile" accept=".png,.jpg,.jpeg" name="imageFile"/>
+                        <label for="avatarFile" class="form-label"
+                          >Avatar:</label
+                        >
+                        <input
+                          class="form-control"
+                          type="file"
+                          id="avatarFile"
+                          accept=".png,.jpg,.jpeg"
+                          name="imageFile"
+                        />
                       </div>
                       <div class="col-12 mb-3 col-md-6">
-                         <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview"/>
+                        <img
+                          style="max-height: 250px; display: none"
+                          alt="avatar preview"
+                          id="avatarPreview"
+                        />
                       </div>
 
-                      <div class="col-12 mt-3" >
+                      <div class="col-12 mt-3">
                         <button type="submit" class="btn btn-primary">
                           Submit
                         </button>
