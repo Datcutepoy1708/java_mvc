@@ -5,19 +5,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name="products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
-    private double price;
+    @NotNull
+    @Min(value = 10, message = "Price must be least 10 VNĐ")
+    private Double price;
     private String image;
     private String detailDesc;
     private String shortDesc;
-    private long quantity;
+   @NotNull
+   @Min(value = 1,message = "Quantity must be least 10 items")
+    private Double quantity;
     private long sold;
     private String factory;
     private String target;
@@ -33,10 +40,10 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
     public String getImage() {
@@ -57,10 +64,10 @@ public class Product {
     public void setShortDesc(String shortDesc) {
         this.shortDesc = shortDesc;
     }
-    public long getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
-    public void setQuantity(long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
     public long getSold() {

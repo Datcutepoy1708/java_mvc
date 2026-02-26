@@ -56,12 +56,12 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- <c:forEach var="product" items="${products1}">
+                      <c:forEach var="product" items="${products}">
                         <tr>
                           <th scope="row">${product.id}</th>
-                          <td>${product.email}</td>
-                          <td>${product.fullname}</td>
-                          <td>${product.role.name}</td>
+                          <td>${product.name}</td>
+                          <td>${product.price}</td>
+                          <td>${product.factory}</td>
                           <td>
                             <a
                               class="btn btn-success"
@@ -80,7 +80,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                             >
                           </td>
                         </tr>
-                      </c:forEach> -->
+                      </c:forEach>
                     </tbody>
                   </table>
                 </div>

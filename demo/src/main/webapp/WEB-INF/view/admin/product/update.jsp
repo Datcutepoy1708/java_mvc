@@ -51,36 +51,27 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                   <hr />
                   <form:form
                     method="post"
-                    action="/admin/product/create"
-                    modelAttribute="newProduct"
+                    action="/admin/product/update/${currentProduct.id}"
+                    modelAttribute="currentProduct"
                     enctype="multipart/form-data"
                   >
                     <div class="row">
                       <div class="col-6">
-                        <c:set var="errorName">
-                          <form:errors path="name" cssClass="invalid-feedback" />
-                        </c:set>
                         <label class="form-label">Name:</label>
                         <form:input
                           type="text"
-                          class="form-control ${not empty errorName ? 'is-invalid': ''}"
+                          class="form-control"
                           path="name"
                         />
-                        ${errorName}
                       </div>
 
                       <div class="col-6">
-                        <c:set var="errorPrice">
-                          <form:errors path="price" cssClass="invalid-feedback" />
-                        </c:set>
                         <label class="form-label">Price:</label>
                         <form:input
                           type="text"
-                          class="form-control ${not empty errorPrice ? 'is-invalid': ''}"
+                          class="form-control"
                           path="price"
-                          placeholder="0.0"
                         />
-                        ${errorPrice}
                       </div>
 
                       <div class="col-12 mb-3">
@@ -102,16 +93,12 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                       </div>
 
                       <div class="col-6">
-                        <c:set var="errorQuantity">
-                          <form:errors path="quantity" cssClass="invalid-feedback" />
-                        </c:set>
                         <label class="form-label">Quantity:</label>
                         <form:input
                           type="text"
-                          class="form-control ${not empty errorQuantity ? 'is-invalid':''}"
+                          class="form-control"
                           path="quantity"
                         />
-                        ${errorQuantity}
                       </div>
 
                       <div class="col-6">
@@ -154,13 +141,14 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                           name="imageFile"
                         />
                       </div>
-                      <div class="col-12 mb-3 col-md-6">
-                        <img
-                          style="max-height: 250px; display: none"
-                          alt="image preview"
-                          id="imagePreview"
-                        />
-                      </div>
+                      <div class="mb-3 col-md-6">
+                      <img
+                        src="/images/image/${currentProduct.image}"
+                        style="max-height: 250px"
+                        alt="avatar preview"
+                        id="imageFile"
+                      />
+                    </div>
 
                       <div class="col-12 mt-3">
                         <button type="submit" class="btn btn-primary">
