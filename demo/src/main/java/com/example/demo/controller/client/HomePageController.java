@@ -25,5 +25,5 @@ public class HomePageController {
         List<Product> products=this.productService.getAllProducts();
         model.addAttribute("products",products);
         return "client/homepage/show";
-    }  
+    }      
 }

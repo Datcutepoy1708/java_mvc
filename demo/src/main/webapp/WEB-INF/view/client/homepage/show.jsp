@@ -138,19 +138,23 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                         <div
                           class="p-4 border border-secondary border-top-0 rounded-bottom"
                         >
-                          <h4>${product.name}</h4>
+                          <h4>
+                            <a href="/product/${product.id}">
+                              ${product.name}
+                            </a>                            
+                          </h4>
                           <p>
                             ${product.shortDesc}
                           </p>
                           <div
                             class="d-flex justify-content-between flex-lg-wrap"
                           >
-                            <p class="text-dark fs-5 fw-bold mb-0">
+                            <p class="text-dark fs-5 fw-bold mb-0" style="font-size: 15px; text-align: center; width: 100%;">
                              <fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="0"/> đ
                             </p>
                             <a
                               href="#"
-                              class="btn border border-secondary rounded-pill px-3 text-primary"
+                              class=" mx-auto btn border border-secondary rounded-pill px-3 text-primary"
                               ><i
                                 class="fa fa-shopping-bag me-2 text-primary"
                               ></i>
