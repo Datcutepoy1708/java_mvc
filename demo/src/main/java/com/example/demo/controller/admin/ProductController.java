@@ -76,24 +76,37 @@ public class ProductController {
         return "admin/product/update";
     }
     @PostMapping(value="/admin/product/update/{id}")
-    public String postUpdateProductPage(Model model,
-        @ModelAttribute("currentProduct") Product product, 
-        @RequestParam("imageFile") MultipartFile file){
-            Product currentProduct =this.productService.findProductById(product.getId());
-            if(currentProduct !=null){
-                currentProduct.setName(product.getName());
-                currentProduct.setPrice(product.getPrice());
-                currentProduct.setDetailDesc(product.getDetailDesc());
-                currentProduct.setShortDesc(product.getShortDesc());
-                currentProduct.setQuantity(product.getQuantity());
-                currentProduct.setFactory(product.getFactory());
-                currentProduct.setTarget(product.getTarget());
-                String image=this.uploadService.handleSaveUploadFile(file, "image");
-                currentProduct.setImage(image);
-                this.productService.handleSaveProduct(currentProduct);
-            }
-             return "redirect:/admin/product";
+public String postUpdateProductPage(Model model,
+    @ModelAttribute("currentProduct") @Valid Product product,
+    BindingResult bindingResult,
+    @RequestParam("imageFile") MultipartFile file){
+
+        // in lỗi ra console
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for(FieldError error : errors){
+            System.out.println(">>>>" + error.getField() + " - " + error.getDefaultMessage());
         }
+        // validate
+        if(bindingResult.hasErrors()){
+            return "admin/product/update";
+        }
+        Product currentProduct = this.productService.findProductById(product.getId());
+        if(currentProduct != null){
+            currentProduct.setName(product.getName());
+            currentProduct.setPrice(product.getPrice());
+            currentProduct.setDetailDesc(product.getDetailDesc());
+            currentProduct.setShortDesc(product.getShortDesc());
+            currentProduct.setQuantity(product.getQuantity());
+            currentProduct.setFactory(product.getFactory());
+            currentProduct.setTarget(product.getTarget());
+            if(file != null && !file.isEmpty()){
+                String image = this.uploadService.handleSaveUploadFile(file, "image");
+                currentProduct.setImage(image);
+            }
+            this.productService.handleSaveProduct(currentProduct);
+        }
+        return "redirect:/admin/product";
+    }
     @GetMapping(value = "/admin/product/delete/{id}")
     public String getDeleteProduct(Model model, @PathVariable long id){
         model.addAttribute("id",id);

@@ -1,5 +1,8 @@
 package com.example.demo.domain.dto;
 
+import com.example.demo.service.validator.RegisterCheck;
+
+@RegisterCheck
 public class RegisterDTO {
     private String firstName;
     private String lastName;
