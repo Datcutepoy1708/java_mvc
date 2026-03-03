@@ -84,7 +84,7 @@ uri="http://www.springframework.org/tags/form" %>
                         <a class="small" href="password.html"
                           >Forgot Password?</a
                         >
-                        <a class="btn btn-primary" href="/">Login</a>
+                          <button class="btn btn-primary" type="submit">Login</button>
                       </div>
                     </form>
                   </div>

@@ -50,18 +50,26 @@ public class SecurityConfiguration {
     return authProvider;
    }
    @Bean
+   public CustomSuccess customSuccess(){
+    return new CustomSuccess();
+   }
+   @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+    
     .authorizeHttpRequests(authorize -> authorize
         .dispatcherTypeMatchers(DispatcherType.FORWARD,
 DispatcherType.INCLUDE) .permitAll()
-        .requestMatchers("/","/login","/register", "/client/**", "/css/**", "/js/**",
+        .requestMatchers("/","/login","/register","/product/**", "/client/**", "/css/**", "/js/**",
 "/images/**").permitAll()
+    .requestMatchers("/admin/**").hasRole("ADMIN")
     .anyRequest().authenticated())
     .formLogin(formLogin -> formLogin
     .loginPage("/login")
     .failureUrl("/login?error")
-    .permitAll());
+    .successHandler(customSuccess())
+    .permitAll()
+    );
     return http.build();
     }
 }
