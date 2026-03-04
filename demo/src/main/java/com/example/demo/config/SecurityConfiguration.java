@@ -69,7 +69,7 @@ DispatcherType.INCLUDE) .permitAll()
     .failureUrl("/login?error")
     .successHandler(customSuccess())
     .permitAll()
-    );
+    ).exceptionHandling(ex->ex.accessDeniedPage("/access-deny"));
     return http.build();
     }
 }

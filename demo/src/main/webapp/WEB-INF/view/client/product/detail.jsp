@@ -19,6 +19,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Libraries Stylesheet -->
         <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
