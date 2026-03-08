@@ -88,7 +88,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                     src="/images/product/laptop-item-1.jpeg"
                   />
                   <div class="text-center my-3">
-                    <c:out value="${pageContext.request.userPrincipal.name}" />
+                    <c:out value="${sessionScope.fullname}" />
                   </div>
                 </li>
                 <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
@@ -120,3 +120,4 @@ uri="http://java.sun.com/jsp/jstl/core"%>
   </div>
 </div>
 <!-- Navbar End -->
+<!-- cách lấy avatar là /images/product/${sessionScope.avatar}  -->

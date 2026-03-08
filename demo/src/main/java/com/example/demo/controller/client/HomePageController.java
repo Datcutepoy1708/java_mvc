@@ -17,6 +17,8 @@ import com.example.demo.domain.dto.RegisterDTO;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +40,10 @@ public class HomePageController {
         this.passwordEncoder=passwordEncoder;
     }
     @GetMapping("/")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model,HttpServletRequest request ) {
         List<Product> products=this.productService.getAllProducts();
         model.addAttribute("products",products);
+        HttpSession session=request.getSession(false);
         return "client/homepage/show";
     }
     @GetMapping(value = "/register")

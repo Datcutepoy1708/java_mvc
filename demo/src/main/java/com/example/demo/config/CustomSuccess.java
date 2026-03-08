@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -12,12 +13,17 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.example.demo.domain.User;
+import com.example.demo.service.UserService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class CustomSuccess implements AuthenticationSuccessHandler {
+    @Autowired
+    private UserService userService;
     private RedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
     protected String determineTargetUrl(final Authentication authentication) {
 
@@ -35,12 +41,20 @@ public class CustomSuccess implements AuthenticationSuccessHandler {
 
     throw new IllegalStateException();
 }
-protected void clearAuthenticationAttributes(HttpServletRequest request) {
+protected void clearAuthenticationAttributes(HttpServletRequest request,Authentication authentication) {
     HttpSession session = request.getSession(false);
     if (session == null) {
         return;
     }
     session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    //get email
+    String email= authentication.getName();
+    //query user
+    User user=this.userService.getUserByEmail(email);
+    if(user != null){
+      session.setAttribute("fullname",user.getFullname());
+      session.setAttribute("avatar", user.getAvatar());
+    }
 }
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -50,7 +64,7 @@ protected void clearAuthenticationAttributes(HttpServletRequest request) {
             return;
         }
         redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request);
+        clearAuthenticationAttributes(request,authentication);
     }
     
 }
