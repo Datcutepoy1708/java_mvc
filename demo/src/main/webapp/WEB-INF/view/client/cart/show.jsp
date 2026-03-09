@@ -138,11 +138,21 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     đ
                   </td>
                   <td>
-                    <button
-                      class="btn btn-md rounded-circle bg-light border mt-4"
+                    <form
+                      method="post"
+                      action="/delete-cart-product/${cartDetail.id}"
                     >
-                      <i class="fa fa-times text-danger"></i>
-                    </button>
+                      <input
+                        type="hidden"
+                        name="${_csrf.parameterName}"
+                        value="${_csrf.token}"
+                      />
+                      <button
+                        class="btn btn-md rounded-circle bg-light border mt-4"
+                      >
+                        <i class="fa fa-times text-danger"></i>
+                      </button>
+                    </form>
                   </td>
                 </tr>
               </c:forEach>
@@ -188,7 +198,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="py-4 mb-4 border-top border-bottom d-flex justify-content-between"
               >
                 <h5 class="mb-0 ps-4 me-4">Tổng tiền</h5>
-                <p class="mb-0 pe-4">
+                <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                   <fmt:formatNumber value="${totalPrice}" type="number" /> đ
                 </p>
               </div>

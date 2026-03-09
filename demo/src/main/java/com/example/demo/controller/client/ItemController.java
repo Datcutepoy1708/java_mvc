@@ -82,5 +82,13 @@ public String getCartPage(Model model, HttpServletRequest request) {
     model.addAttribute("totalPrice", totalPrice);
     return "client/cart/show";
 }
+
+@PostMapping(value="/delete-cart-product/{id}")
+public String deleteCartDetail(@PathVariable long id,HttpServletRequest request){
+    HttpSession session=request.getSession(false);
+    long cartDetailId=id;
+    this.productService.handleRemoveCartDetail(cartDetailId, session);
     
+    return "redirect:/cart/show";
+}    
 }

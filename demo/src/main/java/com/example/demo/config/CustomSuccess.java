@@ -60,15 +60,21 @@ protected void clearAuthenticationAttributes(HttpServletRequest request,Authenti
       session.setAttribute("sum", sum);
     }
 }
+    
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException, ServletException {
-        String targetUrl=determineTargetUrl(authentication);
-        if(response.isCommitted()){
-            return;
-        }
-        redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request,authentication);
+        Authentication authentication) throws IOException, ServletException {
+    
+    // ✅ Set session TRƯỚC
+    clearAuthenticationAttributes(request, authentication);
+    
+    String targetUrl = determineTargetUrl(authentication);
+    if (response.isCommitted()) {
+        return;
     }
+    
+    // ✅ Redirect SAU
+    redirectStrategy.sendRedirect(request, response, targetUrl);
+}
     
 }
