@@ -71,7 +71,7 @@ public String getCartPage(Model model, HttpServletRequest request) {
         return "client/cart/show";
     }
 
-    List<CartDetail> cartDetails = cart.getCartDetails();
+    List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>(): cart.getCartDetails();
 
     double totalPrice = 0;
     for (CartDetail cartDetail : cartDetails) {

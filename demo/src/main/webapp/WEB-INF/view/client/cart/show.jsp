@@ -116,6 +116,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                         type="text"
                         class="form-control form-control-sm text-center border-0"
                         value="${cartDetail.quantity}"
+                        data-cart-detail-id="${cartDetail.id}"
+                        data-cart-detail-price="${cartDetail.price}"
                       />
                       <div class="input-group-btn">
                         <button
@@ -127,10 +129,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     </div>
                   </td>
                   <td>
-                    <fmt:formatNumber
-                      value="${cartDetail.product.price * cartDetail.quantity}"
-                      type="number"
-                    />
+                    <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
+                      <fmt:formatNumber
+                        value="${cartDetail.product.price * cartDetail.quantity}"
+                        type="number"
+                      />
+                    </p>
                     đ
                   </td>
                   <td>
@@ -164,11 +168,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             <div class="bg-light rounded">
               <div class="p-4">
                 <h1 class="display-6 mb-4">
-                  Cart <span class="fw-normal">Total</span>
+                  <span>Thông tin đơn hàng</span>
                 </h1>
                 <div class="d-flex justify-content-between mb-4">
                   <h5 class="mb-0 me-4">Tổng tiền</h5>
-                  <p class="mb-0">
+                  <p class="mb-0" data-cart-total-price="${totalPrice}">
                     <fmt:formatNumber value="${totalPrice}" type="number" />
                     đ
                   </p>
