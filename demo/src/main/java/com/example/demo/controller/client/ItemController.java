@@ -1,13 +1,18 @@
 package com.example.demo.controller.client;
 
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.demo.domain.Cart;
+import com.example.demo.domain.CartDetail;
 import com.example.demo.domain.Product;
+import com.example.demo.domain.User;
 import com.example.demo.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,9 +49,38 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value ="/cart")
-    public String getCartPage(Model model){
+   @GetMapping(value = "/cart/show")
+public String getCartPage(Model model, HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+
+    // Kiểm tra session null
+    if (session == null || session.getAttribute("id") == null) {
+        return "redirect:/login";
+    }
+
+    User currentUser = new User();
+    long id = (long) session.getAttribute("id");
+    currentUser.setId(id);
+
+    Cart cart = this.productService.fetchByUser(currentUser);
+
+    // ✅ Kiểm tra cart null
+    if (cart == null) {
+        model.addAttribute("cartDetails", new ArrayList<>());
+        model.addAttribute("totalPrice", 0.0);
         return "client/cart/show";
     }
+
+    List<CartDetail> cartDetails = cart.getCartDetails();
+
+    double totalPrice = 0;
+    for (CartDetail cartDetail : cartDetails) {
+        totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
+    }
+
+    model.addAttribute("cartDetails", cartDetails);
+    model.addAttribute("totalPrice", totalPrice);
+    return "client/cart/show";
+}
     
 }
