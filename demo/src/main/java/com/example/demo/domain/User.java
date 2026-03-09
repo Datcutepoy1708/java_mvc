@@ -48,6 +48,12 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Cart cart;
 
+    public Cart getCart() {
+        return cart;
+    }
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
     public Role getRole() {
         return role;
     }

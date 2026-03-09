@@ -56,6 +56,8 @@ protected void clearAuthenticationAttributes(HttpServletRequest request,Authenti
       session.setAttribute("avatar", user.getAvatar());
       session.setAttribute("id", user.getId());
       session.setAttribute("email", user.getEmail());
+      int sum=user.getCart().getSum();
+      session.setAttribute("sum", sum);
     }
 }
     @Override

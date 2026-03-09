@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,9 @@ import com.example.demo.respository.CartDetailRepository;
 import com.example.demo.respository.CartRepository;
 import com.example.demo.respository.ProductRepository;
 import com.example.demo.respository.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ProductService {
@@ -42,7 +46,7 @@ public class ProductService {
         Product product= this.productRepository.findById(id);
         return product;
     }
-    public void handleAddProductToCart(String email,Long productId) {
+    public void handleAddProductToCart(String email,Long productId,HttpSession session) {
          User user=this.userService.getUserByEmail(email);
          if(user !=null){
             Cart cart=this.cartRepository.findByUser(user);
@@ -50,7 +54,7 @@ public class ProductService {
                 // tạo mới cart
                 Cart newCart=new Cart();
                 newCart.setUser(user);
-                newCart.setSum(1);
+                newCart.setSum(0);
                 cart=this.cartRepository.save(newCart);
             }
             // save cart_detail
@@ -58,13 +62,30 @@ public class ProductService {
             Optional<Product> productOptional=this.productRepository.findById(productId);
             if(productOptional.isPresent()){
                 Product realProduct=productOptional.get();
+
+                //check sản phẩm
+              CartDetail oldDetail=this.cartDetailRepository.findByCartAndProduct(cart, realProduct);
+              if(oldDetail ==null){
+                 
                 CartDetail cartDetail=new CartDetail();
                 cartDetail.setCart(cart);
                 cartDetail.setProduct(realProduct);
                 cartDetail.setPrice(realProduct.getPrice());
                 cartDetail.setQuantity(1);
-
                 this.cartDetailRepository.save(cartDetail);
+
+                //update cart (sum)
+                int s=cart.getSum()+1;
+                cart.setSum(cart.getSum()+1);
+                this.cartRepository.save(cart);
+                session.setAttribute("sum", s);
+
+              }else{
+                oldDetail.setQuantity(oldDetail.getQuantity()+1);
+                this.cartDetailRepository.save(oldDetail);
+              }
+                //check sản phẩm
+              
             }
          }
     }
