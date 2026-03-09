@@ -103,14 +103,15 @@ public class ProductService {
 
         this.cartDetailRepository.deleteById(cartDetailId);
 
-        if(currentCart.getSum() >1){
-          int s= currentCart.getSum() -1;
+        if(currentCart.getSum() > 1){
+          int s= currentCart.getSum() - 1;
           currentCart.setSum(s);
           session.setAttribute("sum", s);
           this.cartRepository.save(currentCart);
         }else{
-          this.cartRepository.deleteById(currentCart.getId());
+          currentCart.setSum(0);
           session.setAttribute("sum", 0);
+          this.cartRepository.save(currentCart);
         }
       }
     }
