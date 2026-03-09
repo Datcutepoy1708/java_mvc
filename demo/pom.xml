@@ -93,6 +93,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- specify the primary main class to avoid ambiguity -->
+                    <mainClass>com.example.demo.LaptopShopApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
