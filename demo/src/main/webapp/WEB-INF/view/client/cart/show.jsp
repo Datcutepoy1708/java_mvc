@@ -118,6 +118,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                         value="${cartDetail.quantity}"
                         data-cart-detail-id="${cartDetail.id}"
                         data-cart-detail-price="${cartDetail.price}"
+                        data-cart-detail-index="${status.index}"
                       />
                       <div class="input-group-btn">
                         <button
@@ -187,6 +188,33 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     đ
                   </p>
                 </div>
+                <form:form action="/confirm-checkout" method="post" modelAttributeq="cart">
+                    <input
+                        type="hidden"
+                        name="${_csrf.parameterName}"
+                        value="${_csrf.token}"
+                      />
+                      <div style="display: none;">
+                           <c:forEach var="cartDetail" items="carts.cartDetail" varStatus="status">
+                            <div class="mb-3">
+                              <div class="form-group">
+                                <label>Id:</label>
+                                <form:input class="form-control" type="text"
+                                value="${cartDetail.id}"
+                                path="cartDetails[${status.index}].id"
+                                 />
+                              </div>
+                              <div class="form-group">
+                                <label>Quantity</label>
+                                <form:input class="form-control" type="text"
+                                value="${cartDetail.quantity}"
+                                path="cartDetails[${status.index}].quantity"
+                                />
+                              </div>
+                            </div>
+                           </c:forEach>
+                      </div>
+                </form:form>
                 <div class="d-flex justify-content-between">
                   <h5 class="mb-0 me-4">Phí vận chuyển</h5>
                   <div class="">
@@ -206,7 +234,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
                 type="button"
               >
-                Proceed Checkout
+                Xác nhận thanh toán
               </button>
             </div>
           </div>
