@@ -54,6 +54,8 @@ protected void clearAuthenticationAttributes(HttpServletRequest request,Authenti
     if(user != null){
       session.setAttribute("fullname",user.getFullname());
       session.setAttribute("avatar", user.getAvatar());
+      session.setAttribute("id", user.getId());
+      session.setAttribute("email", user.getEmail());
     }
 }
     @Override
