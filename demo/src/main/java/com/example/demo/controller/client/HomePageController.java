@@ -6,23 +6,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
 import com.example.demo.domain.dto.RegisterDTO;
+import com.example.demo.service.OrderService;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -33,11 +30,13 @@ public class HomePageController {
     private final ProductService productService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final OrderService orderService;
 
-    public HomePageController(ProductService productService,UserService userService,PasswordEncoder passwordEncoder) {
+    public HomePageController(ProductService productService,UserService userService,PasswordEncoder passwordEncoder,OrderService orderService) {
         this.productService = productService;
         this.userService=userService;
         this.passwordEncoder=passwordEncoder;
+        this.orderService=orderService;
     }
     @GetMapping("/")
     public String getHomePage(Model model,HttpServletRequest request ) {
@@ -76,4 +75,6 @@ public class HomePageController {
     public String getDenyPage(Model model){
         return "client/auth/deny";
     }
+
+
 }
