@@ -72,7 +72,7 @@ public class Orders {
         this.orderDetails = orderDetails;
     }
     @OneToMany( mappedBy = "order")
-    List<OrderDetail> orderDetails;
+    private List<OrderDetail> orderDetails;
 
     
     public long getId() {
@@ -91,6 +91,7 @@ public class Orders {
     public void setTotalpPrice(double totalpPrice) {
         this.totalPrice = totalpPrice;
     }
-
+     
+    
     
 }
