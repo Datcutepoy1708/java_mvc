@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.User;
 import com.example.demo.domain.dto.RegisterDTO;
+import com.example.demo.respository.OrderRepository;
+import com.example.demo.respository.ProductRepository;
 import com.example.demo.respository.RoleRepository;
 import com.example.demo.respository.UserRepository;
 
 @Service
 public class UserService {
-    public UserService(UserRepository userRepository,RoleRepository roleRepository) {
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    public UserService(UserRepository userRepository,RoleRepository roleRepository,OrderRepository orderRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.roleRepository=roleRepository;
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -61,5 +67,15 @@ public class UserService {
 
     public User getUserByEmail(String email){
         return this.userRepository.findByEmail(email);
+    }
+
+    public long countOrders(){
+        return  this.orderRepository.count();
+    }
+    public long countProducts(){
+        return  this.productRepository.count();
+    }
+    public long countUsers(){
+        return  this.userRepository.count();
     }
 }
