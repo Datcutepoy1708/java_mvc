@@ -130,8 +130,8 @@ public String handlePlaceOrder(HttpServletRequest request,
     User currentUser = new User();
     currentUser.setId(id);
     
-    // this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
-    return "redirect:/";
+     this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+    return "client/cart/thank";
 }
 
 

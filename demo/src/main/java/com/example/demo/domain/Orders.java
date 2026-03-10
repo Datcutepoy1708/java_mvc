@@ -53,6 +53,24 @@ public class Orders {
     @JoinColumn(name="user_id")
     private User user;
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
     @OneToMany( mappedBy = "order")
     List<OrderDetail> orderDetails;
 

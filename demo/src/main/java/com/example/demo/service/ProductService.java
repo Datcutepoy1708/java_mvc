@@ -3,10 +3,13 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Cart;
 import com.example.demo.domain.CartDetail;
+import com.example.demo.domain.OrderDetail;
+import com.example.demo.domain.Orders;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
 import com.example.demo.respository.CartDetailRepository;
@@ -130,48 +133,47 @@ public class ProductService {
       }
     }
 
-    // public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress, String receiverPhone) {
-    //     // step 1: get cart by user
-    //     Cart cart = this.cartRepository.findByUser(user);
-    //     if (cart != null) {
-    //         List<CartDetail> cartDetails = cart.getCartDetails();
-    //         if (cartDetails != null && cartDetails.size() > 0) {
-    //             // create order
-    //             Orders order = new Orders();
-    //             order.setUser(user);
-    //             order.setReceiverName(receiverName);
-    //             order.setReceiverAddress(receiverAddress);
-    //             order.setReceiverPhone(receiverPhone);
-    //             order.setStatus("PENDING");
+    public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress, String receiverPhone) {
+        // create order
+        Orders order=new Orders();
+        order.setUser(user);
+        order.setReceiverAddress(receiverAddress);
+        order.setReceiverName(receiverName);
+        order.setReceiverPhone(receiverPhone);
 
-    //             double sum = 0;
-    //             for (CartDetail cd : cartDetails) {
-    //                 sum += cd.getPrice() * cd.getQuantity();
-    //             }
-    //             order.setTotalpPrice(sum);
-    //             order = this.orderRepository.save(order);
+        order=this.orderRepository.save(order);
 
-    //             // create orderDetail
-    //             for (CartDetail cd : cartDetails) {
-    //                 OrderDetail orderDetail = new OrderDetail();
-    //                 orderDetail.setOrder(order);
-    //                 orderDetail.setProduct(cd.getProduct());
-    //                 orderDetail.setPrice(cd.getPrice());
-    //                 orderDetail.setQuantity(cd.getQuantity());
-    //                 this.orderDetailRepository.save(orderDetail);
-    //             }
+        //create order detail
+        
+        //step 1: get cart by user
+        Cart cart=this.cartRepository.findByUser(user);
+        if(cart != null){
+          List<CartDetail> cartDetails= cart.getCartDetails();
 
-    //             // step 2: delete cart_detail and cart
-    //             for (CartDetail cd : cartDetails) {
-    //                 this.cartDetailRepository.deleteById(cd.getId());
-    //             }
+          if(cartDetails != null){
+            for(CartDetail cartDetail :cartDetails){
+              OrderDetail orderDetail=new OrderDetail();
+              orderDetail.setOrder(order);
+              orderDetail.setProduct(cartDetail.getProduct());
+              orderDetail.setPrice(cartDetail.getPrice());
+              orderDetail.setQuantity(cartDetail.getQuantity());
+              this.orderDetailRepository.save(orderDetail);
+            }
+          }
 
-    //             this.cartRepository.deleteById(cart.getId());
+          // step 2: bulk delete cart_detail
+          this.cartDetailRepository.deleteByCart(cart);
+          
+          // DO NOT delete the cart to avoid bidirectional relationship issues with User
+          // Just reset its sum to 0
+          cart.setSum(0);
+          this.cartRepository.save(cart);
+          
+          //step 3: update session (reset số trên icon giỏ hàng về 0)
+          session.setAttribute("sum", 0);
+        }
 
-    //             // step 3: update session
-    //             session.setAttribute("sum", 0);
-    //         }
-    //     }
-    // }
+    }
+
 
 }
