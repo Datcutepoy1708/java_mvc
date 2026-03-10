@@ -110,7 +110,7 @@ public String getCheckOutPage(Model model,HttpServletRequest request){
      }
      model.addAttribute("cartDetails", cartDetails);
     model.addAttribute("totalPrice", totalPrice);
-    return "redirect:/checkout";
+    return "client/cart/checkout";
 }
 @PostMapping("/confirm-checkout")
 public String getCheckoutPage(@ModelAttribute("cart") Cart cart){
@@ -125,7 +125,12 @@ public String handlePlaceOrder(HttpServletRequest request,
    @RequestParam("receiverAddress") String receiverAddress,
    @RequestParam("receiverPhone") String receiverPhone
 ) {
-    HttpSession session=request.getSession();
+    HttpSession session = request.getSession(false);
+    long id = (long) session.getAttribute("id");
+    User currentUser = new User();
+    currentUser.setId(id);
+    
+    // this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
     return "redirect:/";
 }
 

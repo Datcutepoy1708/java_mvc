@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +11,10 @@ import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
 import com.example.demo.respository.CartDetailRepository;
 import com.example.demo.respository.CartRepository;
+import com.example.demo.respository.OrderDetailRepository;
+import com.example.demo.respository.OrderRepository;
 import com.example.demo.respository.ProductRepository;
-import com.example.demo.respository.UserRepository;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -23,13 +22,17 @@ public class ProductService {
    private final ProductRepository productRepository;
    private final CartRepository cartRepository;
    private final CartDetailRepository cartDetailRepository;
+   private final OrderRepository orderRepository;
+   private final OrderDetailRepository orderDetailRepository;
 //    private final UserRepository userRepository;
   private final UserService userService;
-   public ProductService(ProductRepository productRepository,CartRepository cartRepository,CartDetailRepository cartDetailRepository,UserService userService ){
+   public ProductService(ProductRepository productRepository,CartRepository cartRepository,CartDetailRepository cartDetailRepository,UserService userService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository ){
     this.productRepository=productRepository;
     this.cartDetailRepository=cartDetailRepository;
     this.cartRepository=cartRepository;
     this.userService=userService;
+    this.orderRepository = orderRepository;
+    this.orderDetailRepository = orderDetailRepository;
    }
    public List<Product> getAllProducts() {
       return this.productRepository.findAll();
@@ -126,5 +129,49 @@ public class ProductService {
         }
       }
     }
+
+    // public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress, String receiverPhone) {
+    //     // step 1: get cart by user
+    //     Cart cart = this.cartRepository.findByUser(user);
+    //     if (cart != null) {
+    //         List<CartDetail> cartDetails = cart.getCartDetails();
+    //         if (cartDetails != null && cartDetails.size() > 0) {
+    //             // create order
+    //             Orders order = new Orders();
+    //             order.setUser(user);
+    //             order.setReceiverName(receiverName);
+    //             order.setReceiverAddress(receiverAddress);
+    //             order.setReceiverPhone(receiverPhone);
+    //             order.setStatus("PENDING");
+
+    //             double sum = 0;
+    //             for (CartDetail cd : cartDetails) {
+    //                 sum += cd.getPrice() * cd.getQuantity();
+    //             }
+    //             order.setTotalpPrice(sum);
+    //             order = this.orderRepository.save(order);
+
+    //             // create orderDetail
+    //             for (CartDetail cd : cartDetails) {
+    //                 OrderDetail orderDetail = new OrderDetail();
+    //                 orderDetail.setOrder(order);
+    //                 orderDetail.setProduct(cd.getProduct());
+    //                 orderDetail.setPrice(cd.getPrice());
+    //                 orderDetail.setQuantity(cd.getQuantity());
+    //                 this.orderDetailRepository.save(orderDetail);
+    //             }
+
+    //             // step 2: delete cart_detail and cart
+    //             for (CartDetail cd : cartDetails) {
+    //                 this.cartDetailRepository.deleteById(cd.getId());
+    //             }
+
+    //             this.cartRepository.deleteById(cart.getId());
+
+    //             // step 3: update session
+    //             session.setAttribute("sum", 0);
+    //         }
+    //     }
+    // }
 
 }

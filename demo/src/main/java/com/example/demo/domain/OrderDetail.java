@@ -28,12 +28,12 @@ public class OrderDetail {
     @Override
     public String toString() {
         return "OrderDetail [id=" + id + ", quantity=" + quantity + ", price=" + price + ", order=" + order
-                + ", prodect=" + prodect + "]";
+                + ", product=" + product + "]";
     }
 
     @ManyToOne
     @JoinColumn(name="product_id")
-    private Product prodect;
+    private Product product;
 
     public long getId() {
         return id;
@@ -67,11 +67,11 @@ public class OrderDetail {
         this.order = order;
     }
 
-    public Product getProdect() {
-        return prodect;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProdect(Product prodect) {
-        this.prodect = prodect;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
