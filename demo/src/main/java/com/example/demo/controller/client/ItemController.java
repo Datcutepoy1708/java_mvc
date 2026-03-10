@@ -38,7 +38,7 @@ public class ItemController {
         Product product=this.productService.findProductById(id);
         model.addAttribute("product",product);
         model.addAttribute("id",id);
-        return "/client/product/detail";
+        return "client/product/detail";
     }
     @PostMapping(value="/add-product-to-cart/{id}")
     public String addPoroductToCart(@PathVariable long id,HttpServletRequest request){
