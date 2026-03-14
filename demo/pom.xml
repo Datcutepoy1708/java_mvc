@@ -89,6 +89,19 @@
     </dependencies>
     
     <build>
+        <!-- Ensure JSPs under src/main/webapp are packaged so embedded Tomcat can find them -->
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>META-INF/resources</targetPath>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
