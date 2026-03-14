@@ -3,7 +3,8 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.Optional;
 
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Cart;
@@ -37,9 +38,15 @@ public class ProductService {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
    }
+   // Lấy tất cả sản phẩm (homepage, chưa cần phân trang)
    public List<Product> getAllProducts() {
       return this.productRepository.findAll();
-    }
+   }
+
+   // Lấy sản phẩm có phân trang (nếu sau này cần)
+   public Page<Product> getAllProducts(Pageable page) {
+      return this.productRepository.findAll(page);
+   }
 
    public Product handleSaveProduct(Product product) {
        Product datcute=this.productRepository.save(product);

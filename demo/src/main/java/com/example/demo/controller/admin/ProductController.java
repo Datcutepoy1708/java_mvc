@@ -2,11 +2,17 @@ package com.example.demo.controller.admin;
 
 import java.util.List;
 
-import org.eclipse.tags.shaded.java_cup.runtime.lr_parser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +21,6 @@ import com.example.demo.service.ProductService;
 import com.example.demo.service.UploadService;
 
 import jakarta.validation.Valid;
-
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -35,10 +35,13 @@ public class ProductController {
     }
 
     @GetMapping(value="/admin/product")    
-    public String getProductPage(Model model) {
+    public String getProductPage(Model model,@RequestParam(name = "page", defaultValue = "0") int page) {
+       Pageable pageable=PageRequest.of(page-1, 4);
+
         model.addAttribute("newProduct", new Product());
-        List<Product> products=this.productService.getAllProducts();
-        model.addAttribute("products",products);
+        Page<Product> products=this.productService.getAllProducts(pageable);
+        List<Product> listProducts=products.getContent();
+        model.addAttribute("products",listProducts);
         return "admin/product/show";
     }
     @GetMapping(value="/admin/product/create")
