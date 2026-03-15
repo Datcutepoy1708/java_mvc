@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Cart;
@@ -18,8 +20,9 @@ import com.example.demo.respository.CartRepository;
 import com.example.demo.respository.OrderDetailRepository;
 import com.example.demo.respository.OrderRepository;
 import com.example.demo.respository.ProductRepository;
-
+import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpSession;
+
 
 @Service
 public class ProductService {
@@ -46,6 +49,63 @@ public class ProductService {
    // Lấy sản phẩm có phân trang (nếu sau này cần)
    public Page<Product> getAllProducts(Pageable page) {
       return this.productRepository.findAll(page);
+   }
+
+   // Lấy sản phẩm theo bộ lọc (factory, target, price range) + phân trang
+   public Page<Product> getFilteredProducts(Pageable pageable,
+           List<String> factories, List<String> targets, List<String> priceRanges) {
+
+       boolean hasFactory = factories != null && !factories.isEmpty();
+       boolean hasTarget = targets != null && !targets.isEmpty();
+       boolean hasPrice = priceRanges != null && !priceRanges.isEmpty();
+
+       if (!hasFactory && !hasTarget && !hasPrice) {
+           return this.productRepository.findAll(pageable);
+       }
+
+       Specification<Product> spec = (root, query, cb) -> {
+           List<Predicate> predicates = new ArrayList<>();
+
+           // Factory filter (IN)
+           if (hasFactory) {
+               predicates.add(root.get("factory").in(factories));
+           }
+
+           // Target filter (IN)
+           if (hasTarget) {
+               predicates.add(root.get("target").in(targets));
+           }
+
+           // Price range filter (OR between ranges)
+           if (hasPrice) {
+               List<Predicate> pricePredicates = new ArrayList<>();
+               for (String range : priceRanges) {
+                   switch (range) {
+                       case "duoi-10":
+                           pricePredicates.add(cb.lt(root.get("price"), 10_000_000.0));
+                           break;
+                       case "10-15":
+                           pricePredicates.add(cb.between(root.get("price"), 10_000_000.0, 15_000_000.0));
+                           break;
+                       case "15-20":
+                           pricePredicates.add(cb.between(root.get("price"), 15_000_000.0, 20_000_000.0));
+                           break;
+                       case "tren-20":
+                           pricePredicates.add(cb.gt(root.get("price"), 20_000_000.0));
+                           break;
+                       default:
+                           break;
+                   }
+               }
+               if (!pricePredicates.isEmpty()) {
+                   predicates.add(cb.or(pricePredicates.toArray(new Predicate[0])));
+               }
+           }
+
+           return cb.and(predicates.toArray(new Predicate[0]));
+       };
+
+       return this.productRepository.findAll(spec, pageable);
    }
 
    public Product handleSaveProduct(Product product) {
