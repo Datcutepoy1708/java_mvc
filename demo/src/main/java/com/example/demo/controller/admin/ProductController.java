@@ -35,7 +35,8 @@ public class ProductController {
     }
 
     @GetMapping(value="/admin/product")    
-    public String getProductPage(Model model,@RequestParam(name = "page", defaultValue = "0") int page) {
+    public String getProductPage(Model model,@RequestParam(name = "page", defaultValue = "1") int page) {
+        if (page < 1) page = 1;
        Pageable pageable=PageRequest.of(page-1, 2);
         model.addAttribute("newProduct", new Product());
         Page<Product> products=this.productService.getAllProducts(pageable);

@@ -13,4 +13,5 @@ import com.example.demo.domain.User;
 public interface OrderRepository extends JpaRepository<Orders, Long> {
    Optional<Orders> findById(long id);
    List<Orders> findByUser(User user);
+   
 }
